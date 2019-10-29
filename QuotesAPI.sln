@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotesAPI", "QuotesAPI\QuotesAPI.csproj", "{7C77BD12-A22B-4FB3-B99B-E11787E30864}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotesAPITests", "QuotesAPITests\QuotesAPITests.csproj", "{4A935489-7248-491F-AE73-F6AF06E9BF84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{7C77BD12-A22B-4FB3-B99B-E11787E30864}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C77BD12-A22B-4FB3-B99B-E11787E30864}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C77BD12-A22B-4FB3-B99B-E11787E30864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A935489-7248-491F-AE73-F6AF06E9BF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A935489-7248-491F-AE73-F6AF06E9BF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A935489-7248-491F-AE73-F6AF06E9BF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A935489-7248-491F-AE73-F6AF06E9BF84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

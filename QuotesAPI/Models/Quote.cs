@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace QuotesAPI.Models
 {
     public class Quote
@@ -10,6 +11,14 @@ namespace QuotesAPI.Models
 
         public Quote()
         {
+        }
+
+        public Quote(int id, string title, string author, string description)
+        {
+            Id = id;
+            Title = title;
+            Author = author;
+            Description = description;
         }
     }
 }
