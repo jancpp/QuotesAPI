@@ -31,9 +31,18 @@ namespace QuotesAPI.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public Quote Get(int id)
+        public IActionResult Get(int id)
         {
-            return _quotesDbContext.Quotes.Find(id);
+            var quote = _quotesDbContext.Quotes.Find(id);
+
+            if (quote == null)
+            {
+                return NotFound("No record found against this id");
+            }
+            else
+            {
+                return Ok(quote);
+            }
         }
 
         // POST api/values
@@ -60,6 +69,7 @@ namespace QuotesAPI.Controllers
                 entity.Title = quote.Title;
                 entity.Author = quote.Author;
                 entity.Description = quote.Description;
+                entity.CreatedAt = quote.CreatedAt;
                 _quotesDbContext.SaveChanges();
 
                 return Ok("Record updated successfuly.");
@@ -72,10 +82,18 @@ namespace QuotesAPI.Controllers
         public IActionResult Delete(int id)
         {
             var quote = _quotesDbContext.Quotes.Find(id);
-            _quotesDbContext.Quotes.Remove(quote);
-            _quotesDbContext.SaveChanges();
 
-            return Ok("Quote deleted");
+            if (quote == null)
+            {
+                return NotFound("No record found against this id");
+            }
+            else
+            {
+                _quotesDbContext.Quotes.Remove(quote);
+                _quotesDbContext.SaveChanges();
+
+                return Ok("Quote deleted");
+            }
         }
     }
 }

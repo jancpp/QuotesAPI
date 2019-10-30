@@ -27,7 +27,7 @@ namespace QuotesAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddXmlSerializerFormatters();
             services.AddDbContext<QuotesDbContext>(opinion => opinion.UseMySQL("server=localhost;userid=root;pwd=171174;port=3306;database=jansmysqldb;allowPublicKeyRetrieval=true;sslmode=none;"));
         }
 
@@ -43,7 +43,7 @@ namespace QuotesAPI
                 app.UseHsts();
             }
 
-            dbContext.Database.EnsureCreated();
+            //dbContext.Database.EnsureCreated(); // uncomment if using migrations
             app.UseHttpsRedirection();
             app.UseMvc();
         }
