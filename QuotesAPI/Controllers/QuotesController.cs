@@ -49,6 +49,10 @@ namespace QuotesAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Quote quote)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             _quotesDbContext.Quotes.Add(quote);
             _quotesDbContext.SaveChanges();
 
@@ -59,6 +63,10 @@ namespace QuotesAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Quote quote)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var entity = _quotesDbContext.Quotes.Find(id);
             if (entity == null)
             {
