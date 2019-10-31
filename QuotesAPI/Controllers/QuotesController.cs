@@ -123,7 +123,14 @@ namespace QuotesAPI.Controllers
             var currentPageSize = pageSize ?? 5;
             var currentPageNumber = pageNumber ?? 1;
 
-            return Ok(quotes.Skip((currentPageNumber - 1) * pageSize).Take(currentPageSize));
+            return Ok(quotes.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult SearchQuote(string type)
+        {
+            var quotes = _quotesDbContext.Quotes.Where(q => q.Type.StartsWith(type));
+            return Ok(quotes);
         }
     }
 }
