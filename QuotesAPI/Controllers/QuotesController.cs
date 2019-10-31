@@ -117,10 +117,13 @@ namespace QuotesAPI.Controllers
         }
 
         [HttpGet("[action]")]
-        public IActionResult PagingQuote(int pageNumber, int pageSize)
+        public IActionResult PagingQuote(int? pageNumber, int? pageSize)
         {
             var quotes = _quotesDbContext.Quotes;
-            return Ok(quotes.Skip((pageNumber - 1) * pageSize).Take(pageSize));
+            var currentPageSize = pageSize ?? 5;
+            var currentPageNumber = pageNumber ?? 1;
+
+            return Ok(quotes.Skip((currentPageNumber - 1) * pageSize).Take(currentPageSize));
         }
     }
 }
