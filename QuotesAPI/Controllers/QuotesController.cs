@@ -75,7 +75,7 @@ namespace QuotesAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Quote quote)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -114,6 +114,13 @@ namespace QuotesAPI.Controllers
 
                 return Ok("Quote deleted");
             }
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult PagingQuote(int pageNumber, int pageSize)
+        {
+            var quotes = _quotesDbContext.Quotes;
+            return Ok(quotes.Skip((pageNumber - 1) * pageSize).Take(pageSize));
         }
     }
 }
