@@ -29,6 +29,7 @@ namespace QuotesAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddXmlSerializerFormatters();
             services.AddDbContext<QuotesDbContext>(opinion => opinion.UseMySQL("server=localhost;userid=root;pwd=171174;port=3306;database=jansmysqldb;allowPublicKeyRetrieval=true;sslmode=none;"));
+            services.AddResponseCaching();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +45,7 @@ namespace QuotesAPI
             }
 
             //dbContext.Database.EnsureCreated(); // uncomment if using migrations
+            app.UseResponseCaching();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
