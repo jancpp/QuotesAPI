@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QuotesAPI.Data;
@@ -12,6 +13,7 @@ using QuotesAPI.Models;
 namespace QuotesAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class QuotesController : Controller
     {
         private QuotesDbContext _quotesDbContext;
@@ -23,7 +25,7 @@ namespace QuotesAPI.Controllers
 
         // GET: api/values
         [HttpGet]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public IActionResult Get(string sort)
         {
             IQueryable<Quote> quotes;
