@@ -55,7 +55,7 @@ namespace QuotesAPI
                 app.UseHsts();
             }
 
-            //dbContext.Database.EnsureCreated(); // uncomment if using migrations
+            //dbContext.Database.EnsureCreated(); // comment out if using migrations
             
             app.UseResponseCaching();
             // Enable authentication middleware

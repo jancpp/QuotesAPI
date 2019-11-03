@@ -26,6 +26,7 @@ namespace QuotesAPI.Controllers
 
         // GET: api/values
         [HttpGet]
+        [AllowAnonymous]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public IActionResult Get(string sort)
         {
@@ -61,6 +62,32 @@ namespace QuotesAPI.Controllers
             }
         }
 
+        [HttpGet("[action]")]
+        public IActionResult PagingQuote(int? pageNumber, int? pageSize)
+        {
+            var quotes = _quotesDbContext.Quotes;
+            var currentPageSize = pageSize ?? 5;
+            var currentPageNumber = pageNumber ?? 1;
+
+            return Ok(quotes.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult SearchQuote(string type)
+        {
+            var quotes = _quotesDbContext.Quotes.Where(q => q.Type.StartsWith(type));
+            return Ok(quotes);
+        }
+
+        [HttpGet("[action]")]
+        public IActionResult MyQuote()
+        {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var quotes = _quotesDbContext.Quotes.Where(q => q.UserId == userId);
+
+            return Ok(quotes);
+        }
+
         // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody] Quote quote)
@@ -72,6 +99,7 @@ namespace QuotesAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             _quotesDbContext.Quotes.Add(quote);
             _quotesDbContext.SaveChanges();
 
@@ -82,6 +110,8 @@ namespace QuotesAPI.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Quote quote)
         {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -90,6 +120,11 @@ namespace QuotesAPI.Controllers
             if (entity == null)
             {
                 return NotFound("No record found against this id");
+            }
+            // To allow update to users that created record (with the same token)
+            if (entity.UserId != userId)
+            {
+                return BadRequest("Sorry, you are not allowed to update this record");
             }
             else
             {
@@ -108,11 +143,17 @@ namespace QuotesAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var quote = _quotesDbContext.Quotes.Find(id);
 
             if (quote == null)
             {
                 return NotFound("No record found against this id");
+            }
+            // To allow delete only to users that created record (with the same token)
+            if (quote.UserId != userId)
+            {
+                return BadRequest("Sorry, you are not allowed to delete this record");
             }
             else
             {
@@ -121,23 +162,6 @@ namespace QuotesAPI.Controllers
 
                 return Ok("Quote deleted");
             }
-        }
-
-        [HttpGet("[action]")]
-        public IActionResult PagingQuote(int? pageNumber, int? pageSize)
-        {
-            var quotes = _quotesDbContext.Quotes;
-            var currentPageSize = pageSize ?? 5;
-            var currentPageNumber = pageNumber ?? 1;
-
-            return Ok(quotes.Skip((currentPageNumber - 1) * currentPageSize).Take(currentPageSize));
-        }
-
-        [HttpGet("[action]")]
-        public IActionResult SearchQuote(string type)
-        {
-            var quotes = _quotesDbContext.Quotes.Where(q => q.Type.StartsWith(type));
-            return Ok(quotes);
         }
     }
 }

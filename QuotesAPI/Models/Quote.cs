@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace QuotesAPI.Models
 {
@@ -25,6 +26,7 @@ namespace QuotesAPI.Models
         [Required]
         public DateTime CreatedAt { get; set; }
 
+        [JsonIgnore]
         public string UserId { get; set; }
 
         public Quote()
